@@ -13,10 +13,10 @@ try:
 except ImportError:
     HEIF_SUPPORTED = False
 
-SUPPORTED = [".jpg", ".jpeg", ".png", ".webp", ".bmp", ".tif", ".tiff"]
+_supported = [".jpg", ".jpeg", ".png", ".webp", ".bmp", ".tif", ".tiff"]
 if HEIF_SUPPORTED:
-    SUPPORTED.append(".heic")
-SUPPORTED = tuple(SUPPORTED)
+    _supported.append(".heic")
+SUPPORTED: tuple[str, ...] = tuple(_supported)
 
 def detect_template_type(template_img):
     TW, TH = template_img.size
@@ -41,7 +41,6 @@ def process_shark_watermark(base_img, template_img):
     base_fitted = ImageOps.fit(base_img, (TW, TH), Image.Resampling.LANCZOS).convert("RGB")
     base_arr = np.array(base_fitted, dtype=np.float32)
     temp_arr = np.array(template_img.convert("RGB"), dtype=np.float32)
-    
     result_arr = base_arr.copy()
     
     # 2. ค้นหาแถบสีแดงด้านล่าง (ช่วง 20% ล่างของภาพ)
